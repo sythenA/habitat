@@ -28,6 +28,7 @@ from ecoDiag import habitatDialog
 from toUnicode import toUnicode
 from msg import MSG
 from TECfile import TECfile
+from specieItem import specieItem
 import os.path
 
 

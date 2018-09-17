@@ -128,7 +128,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QTextEdit" name="xlsFilesEdit">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -157,7 +157,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QListWidget" name="specieListWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -180,6 +180,38 @@
      <number>-1</number>
     </property>
    </widget>
+   <widget class="QPushButton" name="xlsSelectBtn">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>40</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>PMingliu</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Select</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="callSettingsBtn">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>30</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
  </widget>
  <resources/>
