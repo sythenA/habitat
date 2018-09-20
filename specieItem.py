@@ -36,7 +36,8 @@ class specieItem(QListWidgetItem):
             flowRaw = re.split('[;]', flowRaw)
             for level in flowRaw:
                 level = re.split('[,]', level)
-                flowCategory.append([level[0], level[1], level[2]])
+                flowCategory.append([float(level[0]), float(level[1]),
+                                     float(level[2])])
             self.flowCategory = flowCategory
 
         depthCategory = list()
@@ -44,7 +45,8 @@ class specieItem(QListWidgetItem):
             depthRaw = re.split('[;]', depthRaw)
             for level in depthRaw:
                 level = re.split('[,]', level)
-                depthCategory.append([level[0], level[1], level[2]])
+                depthCategory.append([float(level[0]), float(level[1]),
+                                      float(level[2])])
             self.depthCategory = depthCategory
 
         bedCategory = list()
@@ -52,7 +54,8 @@ class specieItem(QListWidgetItem):
             bedRaw = re.split('[;]', bedRaw)
             for level in bedRaw:
                 level = re.split('[,]', level)
-                bedCategory.append([level[0], level[1], level[2]])
+                bedCategory.append([float(level[0]), float(level[1]),
+                                    float(level[2])])
             self.bedCategory = bedCategory
 
         self.region = rawData[0][3]
@@ -62,3 +65,77 @@ class specieItem(QListWidgetItem):
         self.BinoName = rawData[0][12]
         self.name = toUnicode(rawData[0][13])
         self.cName = re.split('[、]', rawData[0][14])
+
+    def flowCategoryMPS(self):
+        if self.flowUnit == 'm/s':
+            return self.flowCategory
+        elif self.flowUnit == 'cm/s':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])/100.0
+                lvl[1] = float(lvl[1])/100.0
+            return flowCat
+        elif self.flowUnit == 'm/min':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])/60.0
+                lvl[1] = float(lvl[1])/60.0
+            return flowCat
+        elif self.flowUnit == 'cm/min':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])/100.0/60.0
+                lvl[1] = float(lvl[1])/100.0/60.0
+            return flowCat
+        elif self.flowUnit == 'in/s':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])*0.0254
+                lvl[1] = float(lvl[1])*0.0254
+            return flowCat
+        elif self.flowUnit == 'in/min':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])*0.0254/60.0
+                lvl[1] = float(lvl[1])*0.0254/60.0
+            return flowCat
+        elif self.flowUnit == 'ft/s':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])*0.3048
+                lvl[1] = float(lvl[1])*0.3048
+            return flowCat
+        elif self.flowUnit == 'ft/min':
+            flowCat = self.flowCategory
+            for lvl in flowCat:
+                lvl[0] = float(lvl[0])*0.3048/60.0
+                lvl[1] = float(lvl[1])*0.3048/60.0
+            return flowCat
+
+    def depthCategoryM(self):
+        if self.depthUnit == 'm':
+            return self.depthCategory
+        elif self.depthUnit == 'cm':
+            depthCat = self.depthCategory
+            for lvl in depthCat:
+                lvl[0] = float(lvl[0])/100.0
+                lvl[1] = float(lvl[1])/100.0
+            return depthCat
+        elif self.depthUnit == 'mm':
+            depthCat = self.depthCategory
+            for lvl in depthCat:
+                lvl[0] = float(lvl[0])/1000.0
+                lvl[1] = float(lvl[1])/1000.0
+            return depthCat
+        elif self.depthUnit == 'ft.':
+            depthCat = self.depthCategory
+            for lvl in depthCat:
+                lvl[0] = float(lvl[0])*0.3048
+                lvl[1] = float(lvl[1])*0.3048
+            return depthCat
+        elif self.depthUnit == 'in.':
+            depthCat = self.depthCategory
+            for lvl in depthCat:
+                lvl[0] = float(lvl[0])*0.0254
+                lvl[1] = float(lvl[1])*0.0254
+            return depthCat

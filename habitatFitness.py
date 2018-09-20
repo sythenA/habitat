@@ -27,7 +27,7 @@ from qgis.PyQt.QtGui import QFileDialog
 from ecoDiag import habitatDialog
 from toUnicode import toUnicode
 from msg import MSG
-from TECfile import TECfile
+from habitatTEC import TECfile
 from specieItem import specieItem
 import os.path
 
@@ -194,17 +194,27 @@ class habitat:
             pass
 
     def addTECFiles(self):
-        filePathes = QFileDialog.getOpenFileNames(
-            caption=MSG['msg02'], directory=self.dlg.projFolderEdit.text(),
+        filePath = QFileDialog.getOpenFileName(
+            caption=toUnicode(MSG['msg02']),
+            directory=self.dlg.projFolderEdit.text(),
             filter="*.dat")
-        for path in filePathes:
-            path = toUnicode(path)
+
+        if filePath:
             fileWidget = TECfile(self.dlg.tecSelectListWidget, 0,
-                                 toUnicode(path),
+                                 toUnicode(filePath),
                                  self.iface)
             self.dlg.tecSelectListWidget.addItem(fileWidget)
+
+            self.dlg.addAttributeToSettings()
+        # Limit allowed TEC file to 1 TEC file only
+        if self.dlg.tecSelectListWidget.count() >= 1:
+            self.dlg.addTecBtn.setEnabled(False)
 
     def deleteTECFile(self):
         selectedTEC = self.dlg.tecSelectListWidget.currentItem()
         c_row = self.dlg.tecSelectListWidget.row(selectedTEC)
         self.dlg.tecSelectListWidget.takeItem(c_row)
+
+        # Limit allowed TEC file to 1 TEC file only
+        if self.dlg.tecSelectListWidget.count() == 0:
+            self.dlg.addTecBtn.setEnabled(True)

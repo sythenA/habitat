@@ -28,7 +28,7 @@ from PyQt4.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtGui import QTextBrowser, QVBoxLayout, QWidget, QFileDialog
 from qgis.PyQt.QtCore import QSettings
 from toUnicode import toUnicode
-from TECfile import TECfile
+from habitatTEC import TECfile
 from specieItem import specieItem
 from readSpecieXls import readXls
 from settingDiag import settings
@@ -68,6 +68,12 @@ class habitatDialog(QtGui.QDialog, FORM_CLASS):
             directory=preSet, caption=toUnicode(MSG['msg01']))
         projFolder = toUnicode(projFolder)
         self.projFolderEdit.setText(projFolder)
+
+    def addAttributeToSettings(self):
+        if self.tecSelectListWidget.count > 0:
+            item = self.tecSelectListWidget.item(0)
+            attributeList = item.attributes
+            self.settingDiag.setAttribute(attributeList)
 
     def selectXlsFiles(self):
         projFolder = toUnicode(self.projFolderEdit.text())

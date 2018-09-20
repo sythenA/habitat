@@ -1,7 +1,7 @@
 
 import os
 from PyQt4 import QtGui, uic
-from qgis.PyQt.QtCore import QSettings
+from qgis.PyQt.QtCore import QSettings, Qt
 
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -14,33 +14,37 @@ class settingsDiag(FORM_CLASS, QtGui.QDialog):
         self.setupUi(self)
 
         self.settings = QSettings('ManySplendid', 'HabitatFitness')
+        if self.settings.value('useBedDia') == Qt.Checked:
+            self.useDiameterChkBox.setCheckState(Qt.Checked)
 
         self.setUnits()
-        self.depthAttrCombo.currentIndexChanged.connect(self.depthAttrChanged)
-        self.xDirAttrCombo.currentIndexChanged.connect(self.xAttrChanged)
-        self.yDirAttrCombo.currentIndexChanged.connect(self.yAttrChanged)
-
-        self.depthUnit.currentIndexChanged.connect(self.depthUnitUpdate)
-        self.xDirUnit.currentIndexChanged.connect(self.xUnitUpdate)
-        self.yDirUnit.currentIndexChanged.connect(self.yUnitUpdate)
 
     def setAttributes(self, attributeList):
         for attr in attributeList:
-            self.depthAttrCombo.addItem(attr)
-            self.xDirAttrCombo.addItem(attr)
-            self.yDirAttrCombo.addItem(attr)
+            self.depthAttrCombo.addItem(attr[0])
+            self.xDirAttrCombo.addItem(attr[0])
+            self.diameterAttrCombo.addItem(attr[0])
+            self.yDirAttrCombo.addItem(attr[0])
 
-        idx = self.depthAttrCombo.findText(self.settings.value('depAttr'))
+        idx = self.depthAttrCombo.findText(
+            self.settings.value('depAttr', 'Water_Depth_m'))
         if idx > -1:
             self.depthAttrCombo.setCurrentIndex(idx)
 
-        idx = self.xDirAttrCombo.findText(self.settings.value('xAttr'))
+        idx = self.xDirAttrCombo.findText(
+            self.settings.value('xAttr', 'Vel_X_m_p_s'))
         if idx > -1:
             self.xDirAttrCombo.setCurrentIndex(idx)
 
-        idx = self.yDirAttrCombo.findText(self.settings.value('yAttr'))
+        idx = self.yDirAttrCombo.findText(
+            self.settings.value('yAttr', 'Vel_Y_m_p_s'))
         if idx > -1:
             self.yDirAttrCombo.setCurrentIndex(idx)
+
+        idx = self.diameterAttrCombo.findText(
+            self.settings.value('bedDiaAttr', 'D50_mm'))
+        if idx > -1:
+            self.diameterAttrCombo.setCurrentIndex(idx)
 
     def setUnits(self):
         idx = self.depthUnit.findText(self.settings.value('depthUnit', 'm'))
@@ -52,29 +56,33 @@ class settingsDiag(FORM_CLASS, QtGui.QDialog):
         idx = self.yDirUnit.findText(self.settings.value('yDirUnit', 'm/s'))
         self.yDirUnit.setCurrentIndex(idx)
 
-    def depthAttrChanged(self, idx):
-        self.settings.setValue('depAttr', self.depthAttrCombo.currentText())
-
-    def xAttrChanged(self, idx):
-        self.settings.setValue('xAttr', self.xDirAttrCombo.currentText())
-
-    def yAttrChanged(self, idx):
-        self.settings.setValue('yAttr', self.yDirAttrCombo.currentText())
-
-    def depthUnitUpdate(self, idx):
-        self.settings.setValue('depthUnit', self.depthUnit.cuurentText())
-
-    def xUnitUpdate(self, idx):
-        self.settings.setValue('xDirUnit', self.xDirUnit.cuurentText())
-
-    def yUnitUpdate(self, idx):
-        self.settings.setValue('yDirUnit', self.yDirUnit.cuurentText())
-
 
 class settings:
     def __init__(self):
         self.dlg = settingsDiag()
+        self.settings = QSettings('ManySplendid', 'HabitatFitness')
 
     def run(self):
         self.dlg.show()
-        self.dlg.exec_()
+        result = self.dlg.exec_()
+
+        if result == 1:
+            self.settings.setValue('depAttr',
+                                   self.dlg.depthAttrCombo.currentText())
+            self.settings.setValue('xAttr',
+                                   self.dlg.xDirAttrCombo.currentText())
+            self.settings.setValue('yAttr',
+                                   self.dlg.yDirAttrCombo.currentText())
+            self.settings.setValue('bedDiaAttr',
+                                   self.dlg.diameterAttrCombo.currentText())
+            self.settings.setValue('depthUnit',
+                                   self.dlg.depthUnit.currentText())
+            self.settings.setValue('xDirUnit',
+                                   self.dlg.xDirUnit.currentText())
+            self.settings.setValue('yDirUnit',
+                                   self.dlg.yDirUnit.currentText())
+            self.settings.setValue('useBedDia',
+                                   self.dlg.useDiameterChkBox.checkState())
+
+    def setAttribute(self, attributeList):
+        self.dlg.setAttributes(attributeList)
