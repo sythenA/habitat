@@ -136,10 +136,10 @@ class habitatDialog(QtGui.QDialog, FORM_CLASS):
         vLayout.addWidget(browser1)
 
         for row in item.flowCategory:
-            string = (row[0] + ' ' + item.flowUnit + ' < ' +
+            string = ('{:5.2f}'.format(row[0]) + ' ' + item.flowUnit + ' < ' +
                       toUnicode(MSG['msg04']) +
-                      ' <= ' + row[1] + ' ' + item.flowUnit +
-                      ' : ' + row[2])
+                      ' <= ' + '{:5.2f}'.format(row[1]) + ' ' + item.flowUnit +
+                      ' : ' + '{:5.2f}'.format(row[2]))
             browser1.append(string)
 
         newWidget = QWidget()
@@ -151,10 +151,10 @@ class habitatDialog(QtGui.QDialog, FORM_CLASS):
         vLayout.addWidget(browser2)
 
         for row in item.depthCategory:
-            string = (row[0] + ' ' + item.depthUnit + ' < ' +
+            string = ('{:5.2f}'.format(row[0]) + ' ' + item.depthUnit + ' < ' +
                       toUnicode(MSG['msg03']) +
-                      ' <= ' + row[1] + ' ' + item.depthUnit +
-                      ' : ' + row[2])
+                      ' <= ' + '{:5.2f}'.format(row[1]) + ' ' +
+                      item.depthUnit + ' : ' + '{:5.2f}'.format(row[2]))
             browser2.append(string)
 
         newWidget = QWidget()
@@ -166,10 +166,10 @@ class habitatDialog(QtGui.QDialog, FORM_CLASS):
         vLayout.addWidget(browser3)
 
         for row in item.bedCategory:
-            string = (row[0] + ' ' + item.bedUnit + ' < ' +
+            string = ('{:5.2f}'.format(row[0]) + ' ' + item.bedUnit + ' < ' +
                       toUnicode(MSG['msg05']) +
-                      ' <= ' + row[1] + ' ' + item.bedUnit +
-                      ' : ' + row[2])
+                      ' <= ' + '{:5.2f}'.format(row[2]) + ' ' + item.bedUnit +
+                      ' : ' + '{:5.2f}'.format(row[2]))
             browser3.append(string)
 
         newWidget = QWidget()

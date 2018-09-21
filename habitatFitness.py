@@ -29,6 +29,7 @@ from toUnicode import toUnicode
 from msg import MSG
 from habitatTEC import TECfile
 from specieItem import specieItem
+from reportPage import habitatReport
 import os.path
 
 
@@ -68,6 +69,7 @@ class habitat:
         self.toolbar = self.iface.addToolBar(u'habitat')
         self.toolbar.setObjectName(u'habitat')
         self.dlg = habitatDialog()
+        self.settings = QSettings('ManySplendid', 'HabitatFitness')
 
         self.dlg.addTecBtn.clicked.connect(self.addTECFiles)
         self.dlg.deleteTecBtn.clicked.connect(self.deleteTECFile)
@@ -181,17 +183,25 @@ class habitat:
         # remove the toolbar
         del self.toolbar
 
+    def getSpecieItems(self):
+        specieItems = list()
+
+        for i in range(0, self.dlg.specieListWidget.count()):
+            specieItems.append(self.dlg.specieListWidget.item(i))
+        return specieItems
+
     def run(self):
-        """Run method that performs all the real work"""
-        # show the dialog
         self.dlg.show()
-        # Run the dialog event loop
         result = self.dlg.exec_()
-        # See if OK was pressed
-        if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-            pass
+        if result == 1:
+            specieItems = self.getSpecieItems()
+            self.settings.setValue(
+                'projFolder',
+                toUnicode(self.dlg.projFolderEdit.text()))
+            rep = habitatReport(
+                self.iface, [self.dlg.tecSelectListWidget.item(0)],
+                specieItems)
+            rep.run()
 
     def addTECFiles(self):
         filePath = QFileDialog.getOpenFileName(
@@ -204,7 +214,6 @@ class habitat:
                                  toUnicode(filePath),
                                  self.iface)
             self.dlg.tecSelectListWidget.addItem(fileWidget)
-
             self.dlg.addAttributeToSettings()
         # Limit allowed TEC file to 1 TEC file only
         if self.dlg.tecSelectListWidget.count() >= 1:

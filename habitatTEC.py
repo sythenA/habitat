@@ -217,10 +217,7 @@ class TECfile(QListWidgetItem):
             avgDepFit = 0.
             avgFlowFit = 0.
             avgBedFit = 0.
-            if polygon[-1] == polygon[-2]:
-                polygon[-1] = polygon[0]
-            else:
-                polygon.append(polygon[0])
+
             sumFlowFit = 0.
             sumDepFit = 0.
             sumBedFit = 0.
@@ -355,6 +352,7 @@ class TECfile(QListWidgetItem):
                     polygon.append(int(node))
                 mesh.append(polygon)
         self.mesh = mesh
+        self.fixMesh()
 
     def toFloat(self, array):
         for i in range(0, len(array)):
@@ -455,6 +453,15 @@ class TECfile(QListWidgetItem):
             fitnessMat.append(fitNess)
         return fitnessMat
 
+    def fixMesh(self):
+        mesh = self.mesh
+        for polygon in mesh:
+            # Fix on format of mesh to calculation mesh area
+            if polygon[-1] == polygon[-2]:
+                polygon[-1] = polygon[0]
+            else:
+                polygon.append(polygon[0])
+
     def divergence(self):
         # glide : 1
         # pool : 2
@@ -467,7 +474,7 @@ class TECfile(QListWidgetItem):
             for j in range(1, len(oneMesh)):
                 areaSum += (oneMesh[j][1]*oneMesh[j-1][0] -
                             oneMesh[j][0]*oneMesh[j-1][1])
-            return areaSum
+            return abs(areaSum)
 
         def meshType(aveFlow, aveDepth):
             if aveFlow > 0. and aveFlow <= 0.3:
