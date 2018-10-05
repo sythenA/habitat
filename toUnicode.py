@@ -8,7 +8,7 @@ def toUnicode(string):
         try:
             string = unicode(string.decode(coding))
             return string
-        except(UnicodeDecodeError, UnicodeEncodeError):
+        except(UnicodeDecodeError, UnicodeEncodeError, AttributeError):
             continue
 
     return string

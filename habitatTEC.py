@@ -320,6 +320,12 @@ class TECfile(QListWidgetItem):
         vtype = re.split(r'\s', DTstring.strip())
         self.variableType = vtype
 
+        try:
+            x_string = re.split('[_]', self.variables[0])
+            self.mapUnit = x_string[1]
+        except(IndexError):
+            self.mapUnit = ''
+
     def readVariables(self, dat):
         lineCounter = int(ceil(float(self.composition['N'])/5))
         variables = self.variables

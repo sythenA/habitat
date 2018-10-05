@@ -60,7 +60,7 @@
      <number>-1</number>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="resultExportBtn">
     <property name="geometry">
      <rect>
       <x>305</x>
@@ -70,7 +70,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>輸出報告</string>
+     <string>結果輸出</string>
     </property>
    </widget>
   </widget>

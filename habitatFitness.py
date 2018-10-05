@@ -1,4 +1,3 @@
-# -*- coding: big5 -*-
 """
 /***************************************************************************
  habitat
@@ -20,7 +19,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
 from PyQt4.QtGui import QAction, QIcon
 from qgis.PyQt.QtGui import QFileDialog
 # Import the code for the dialog
@@ -187,7 +186,8 @@ class habitat:
         specieItems = list()
 
         for i in range(0, self.dlg.specieListWidget.count()):
-            specieItems.append(self.dlg.specieListWidget.item(i))
+            if self.dlg.specieListWidget.item(i).checkState() == Qt.Checked:
+                specieItems.append(self.dlg.specieListWidget.item(i))
         return specieItems
 
     def run(self):

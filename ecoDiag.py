@@ -1,4 +1,3 @@
-# -*- coding: big5 -*-
 """
 /***************************************************************************
  habitatDialog
@@ -28,7 +27,6 @@ from PyQt4.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtGui import QTextBrowser, QVBoxLayout, QWidget, QFileDialog
 from qgis.PyQt.QtCore import QSettings
 from toUnicode import toUnicode
-from habitatTEC import TECfile
 from specieItem import specieItem
 from readSpecieXls import readXls
 from settingDiag import settings
@@ -50,6 +48,8 @@ class habitatDialog(QtGui.QDialog, FORM_CLASS):
         self.setupUi(self)
         self.settings = QSettings('ManySplendid', 'HabitatFitness')
         self.settingDiag = settings()
+        self.projFolderEdit.setText(
+            toUnicode(self.settings.value('projFolder')))
 
         self.projFolderSelectBtn.clicked.connect(self.selectProjectFolder)
         self.xlsSelectBtn.clicked.connect(self.selectXlsFiles)
