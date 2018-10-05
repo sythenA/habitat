@@ -39,6 +39,7 @@ class TECfile(QListWidgetItem):
         self.outDir = ''
         self.xAttr = ''
         self.yAttr = ''
+        self.useBed = False
 
         self.iface = iface
 
@@ -179,10 +180,12 @@ class TECfile(QListWidgetItem):
             return abs(areaSum)
 
         def simpleMean(depFit, flowFit, bedFit):
-            if depFit > 0. and bedFit > 0.:
+            if depFit > 0. and self.useBed:
                 return (depFit + flowFit + bedFit)/3.
-            else:
+            elif depFit > 0. and not self.useBed:
                 return (depFit + flowFit)/2.
+            else:
+                return 0.
 
         def arithMean(depFit, flowFit, bedFit):
             if bedFit > 0.:
